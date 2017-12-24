@@ -11,6 +11,10 @@
     <title>Title</title>
 </head>
 <body>
+
+<h2>It is time to play! Go...</h2>
+<hr>
+
 <%--таблица для отрисовки хода игры, может даже потом переведу на <label></label>, чтобы просто отображать текст--%>
 <table>
     <tr>
