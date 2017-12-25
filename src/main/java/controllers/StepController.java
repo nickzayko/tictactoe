@@ -131,7 +131,6 @@ public class StepController {
             for (int i = 1; i < userStep.length(); i++) {
                 sortedUserCombination = sortedUserCombination + String.valueOf(tmp[i]);
             }
-
             if (sortedUserCombination.contains(VICTORYCOMBINATION1) || sortedUserCombination.contains(VICTORYCOMBINATION2) || sortedUserCombination.contains(VICTORYCOMBINATION3) || sortedUserCombination.contains(VICTORYCOMBINATION4) || sortedUserCombination.contains(VICTORYCOMBINATION5) || sortedUserCombination.contains(VICTORYCOMBINATION6) || sortedUserCombination.contains(VICTORYCOMBINATION7) || sortedUserCombination.contains(VICTORYCOMBINATION8)) {
                 check = true;
             }
@@ -141,6 +140,7 @@ public class StepController {
 
     @RequestMapping("/restartGame")
     public String restartGame(HttpServletRequest request) {
+        userStep = null;
         return "/index.jsp";
     }
 
