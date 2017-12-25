@@ -5,11 +5,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 
 
 @Controller
 @RequestMapping("/in")
 public class StepController {
+    private static String VICTORYCOMBINATION1 = "123";
+    private static String VICTORYCOMBINATION2 = "456";
+    private static String VICTORYCOMBINATION3 = "789";
+    private static String VICTORYCOMBINATION4 = "147";
+    private static String VICTORYCOMBINATION5 = "258";
+    private static String VICTORYCOMBINATION6 = "369";
+    private static String VICTORYCOMBINATION7 = "159";
+    private static String VICTORYCOMBINATION8 = "357";
 
 
     // на данный момент не задействован
@@ -99,18 +108,40 @@ public class StepController {
             int tmp = Integer.parseInt(String.valueOf(userStep.charAt(i)));
             request.setAttribute("v" + (tmp), "X");
         }
+        if (checkVictory(userStep)) {
+            request.setAttribute("victory", "THE USER IS WINNER!!!   GAME OVER!!! PRESS BUTTON To Restart Game");
+            userStep = null;
+        }
+//        request.setAttribute("victory", checkVictory(userStep));
         return "/WEB-INF/pages/table.jsp";
     }
 
-    //метод проверки на выигрыш, ДОДЕЛАЙ ЗАВТРА!!!!
-    private boolean checkVictory (String userStep){
-        int tmp [] = new int[userStep.length()];
-        if (userStep.length() >= 2){
-            for (int i = 0; i < userStep.length(); i++){
-                tmp[i] = userStep.charAt(i);
+    //метод проверки на выигрыш
+    public boolean checkVictory(String userStep) {
+        Boolean check = false;
+        String sortedUserCombination = null;
+        //создаем из массив из комбинации ходов пользователя, сортируем его по возрастанию и сравниваем с победной комбинацией
+        String tmp[] = new String[userStep.length()];
+        if (userStep.length() >= 3) {
+            for (int i = 0; i < userStep.length(); i++) {
+                tmp[i] = String.valueOf(userStep.charAt(i));
+            }
+            Arrays.sort(tmp);
+            sortedUserCombination = String.valueOf(tmp[0]);
+            for (int i = 1; i < userStep.length(); i++) {
+                sortedUserCombination = sortedUserCombination + String.valueOf(tmp[i]);
+            }
+
+            if (sortedUserCombination.contains(VICTORYCOMBINATION1) || sortedUserCombination.contains(VICTORYCOMBINATION2) || sortedUserCombination.contains(VICTORYCOMBINATION3) || sortedUserCombination.contains(VICTORYCOMBINATION4) || sortedUserCombination.contains(VICTORYCOMBINATION5) || sortedUserCombination.contains(VICTORYCOMBINATION6) || sortedUserCombination.contains(VICTORYCOMBINATION7) || sortedUserCombination.contains(VICTORYCOMBINATION8)) {
+                check = true;
             }
         }
-        return true;
+        return check;
+    }
+
+    @RequestMapping("/restartGame")
+    public String restartGame(HttpServletRequest request) {
+        return "/index.jsp";
     }
 
 

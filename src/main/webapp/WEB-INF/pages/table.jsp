@@ -53,6 +53,13 @@
         <td> <form action="/in/step9" method="get"><input type="submit" name="st9" value="9"></form> </td>
     </tr>
 </table>
+<hr>
+<h1> ${victory} </h1>
+<hr>
+<form action="/in/restartGame">
+    <input type="submit" value="Restart game">
+</form>
+
 
 
 </body>
