@@ -123,6 +123,8 @@ public class StepController {
         return "/WEB-INF/pages/table.jsp";
     }
 
+
+    //Проверка и выявление победителя
     private String checkVictoryOfPlayers(String userStep, String computerStep, HttpServletRequest request) {
         Boolean checkUser = false;
         String sortedUserCombination = null;
@@ -196,36 +198,9 @@ public class StepController {
             int tmp = Integer.parseInt(String.valueOf(userStep.charAt(i)));
             request.setAttribute("v" + (tmp), "X");
         }
-//        if (checkVictory(userStep)) {
-//            request.setAttribute("victory", "THE USER IS WINNER!!!   GAME OVER!!! PRESS BUTTON To Restart Game");
-//            userStep = null;
-//        }
-
         return "/WEB-INF/pages/table.jsp";
     }
 
-    //метод проверки ходов пользователя на выигрыш
-//    public boolean checkVictory(String userStep) {
-//        Boolean check = false;
-//        String sortedUserCombination = null;
-//        //создаем из массив из комбинации ходов пользователя, сортируем его по возрастанию и сравниваем с победной комбинацией
-//        String tmp[] = new String[userStep.length()];
-//        if (userStep.length() >= 1) {
-//            for (int i = 0; i < userStep.length(); i++) {
-//                tmp[i] = String.valueOf(userStep.charAt(i));
-//            }
-//            Arrays.sort(tmp);
-//            sortedUserCombination = String.valueOf(tmp[0]);
-//            for (int i = 1; i < userStep.length(); i++) {
-//                sortedUserCombination = sortedUserCombination + String.valueOf(tmp[i]);
-//            }
-//            if ((sortedUserCombination.contains("1") && ((sortedUserCombination.contains("2") && sortedUserCombination.contains("3")) || (sortedUserCombination.contains("4") && sortedUserCombination.contains("7")) || (sortedUserCombination.contains("5") && sortedUserCombination.contains("9")))) || (sortedUserCombination.contains("5") && ((sortedUserCombination.contains("4") && sortedUserCombination.contains("6")) || (sortedUserCombination.contains("2") && sortedUserCombination.contains("8")) || (sortedUserCombination.contains("3") && sortedUserCombination.contains("7")))) || (sortedUserCombination.contains("9") && ((sortedUserCombination.contains("7") && sortedUserCombination.contains("8")) || (sortedUserCombination.contains("3") && sortedUserCombination.contains("6"))))) {
-//                check = true;
-//            }
-//        }
-//
-//        return check;
-//    }
 
     //учу комп ставить нолики
     // комп выбирает рандомно одну из оставшихся пустых ячеек, коммбинация ходов компа запоминается и возвращается
@@ -272,33 +247,10 @@ public class StepController {
             int tmp = Integer.parseInt(String.valueOf(computerStep.charAt(i)));
             request.setAttribute("v" + (tmp), "O");
         }
-//        if (checkVictoryComp(computerStep)) {
-//            request.setAttribute("victory", "THE SHAITAN_MACHINE IS WINNER!!!   GAME OVER!!! PRESS BUTTON To Restart Game");
-//            computerStep = null;
-//        }
         return "/WEB-INF/pages/table.jsp";
     }
 
-//    private boolean checkVictoryComp(String computerStep) {
-//        Boolean checkComp = false;
-//        String sortedCompCombination = null;
-//        //создаем из массив из комбинации ходов пользователя, сортируем его по возрастанию и сравниваем с победной комбинацией
-//        String tmp[] = new String[computerStep.length()];
-//        if (computerStep.length() >= 1) {
-//            for (int i = 0; i < computerStep.length(); i++) {
-//                tmp[i] = String.valueOf(computerStep.charAt(i));
-//            }
-//            Arrays.sort(tmp);
-//            sortedCompCombination = String.valueOf(tmp[0]);
-//            for (int i = 1; i < computerStep.length(); i++) {
-//                sortedCompCombination = sortedCompCombination + String.valueOf(tmp[i]);
-//            }
-//            if ((sortedCompCombination.contains("1") && ((sortedCompCombination.contains("2") && sortedCompCombination.contains("3")) || (sortedCompCombination.contains("4") && sortedCompCombination.contains("7")) || (sortedCompCombination.contains("5") && sortedCompCombination.contains("9")))) || (sortedCompCombination.contains("5") && ((sortedCompCombination.contains("4") && sortedCompCombination.contains("6")) || (sortedCompCombination.contains("2") && sortedCompCombination.contains("8")) || (sortedCompCombination.contains("3") && sortedCompCombination.contains("7")))) || (sortedCompCombination.contains("9") && ((sortedCompCombination.contains("7") && sortedCompCombination.contains("8")) || (sortedCompCombination.contains("3") && sortedCompCombination.contains("6"))))) {
-//                checkComp = true;
-//            }
-//        }
-//        return checkComp;
-//    }
+
 
 }
 
