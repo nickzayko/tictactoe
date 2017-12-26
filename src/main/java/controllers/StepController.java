@@ -25,6 +25,7 @@ public class StepController {
     public String userStep = null;
     public String computerStep = null;
     Random random = new Random();
+    int countOfNumbers = 9;
 
 
     // на данный момент не задействован
@@ -126,7 +127,7 @@ public class StepController {
             request.setAttribute("victory", "THE USER IS WINNER!!!   GAME OVER!!! PRESS BUTTON To Restart Game");
             userStep = null;
         }
-        getComputerSteps(request);
+//        getComputerSteps(request);
         return "/WEB-INF/pages/table.jsp";
     }
 
@@ -158,76 +159,29 @@ public class StepController {
     }
 
     //учу комп ставить нолики
-
-    private String getComputerSteps(HttpServletRequest request) {
-
-
-
-        return "/WEB-INF/pages/table.jsp";
-    }
-//        String computerUsedNumbers = null;
-//        int countOfCharArray = 9;
-//        char [] newCompSteps = new char[countOfCharArray - 1];
-//
-//        //проверяем и удаляем из комбинации для компа ту цифру, которой уже пользователь походил
-//        for (int i = 0; i < compStepCharArray.length; i++) {
-//            if (!userStep.contains(String.valueOf(compStepCharArray[i]))) {
-//                newCompSteps [i] = compStepCharArray[i];
-//            }
+//    private String getComputerSteps(HttpServletRequest request) {
+//        char temporaryArray [] = new char[countOfNumbers];
+//        //получили временый массив свободных ячеек, для хода компа
+//        for (int i = 0; i < countOfNumbers; i++){
+//            if (!userStep.contains(String.valueOf(compStepCharArray[i])));
+//            temporaryArray[i] = compStepCharArray[i];
 //        }
-//        //*******
-//
-//        int indexForSearchCompStep = random.nextInt((newCompSteps.length-1));
-//        if (computerUsedNumbers == null){
-//            computerUsedNumbers = String.valueOf(newCompSteps[indexForSearchCompStep]);
+//        //******
+//        if (computerStep == null){
+//            computerStep = String.valueOf(temporaryArray[random.nextInt(temporaryArray.length-1)]);
 //        } else {
-//            computerUsedNumbers = computerUsedNumbers + String.valueOf(newCompSteps[indexForSearchCompStep]);
+//            computerStep = computerStep +String.valueOf(temporaryArray[random.nextInt(temporaryArray.length-1)]);;
 //        }
-//        for (int i = 0; i < computerUsedNumbers.length(); i++){
-//            int tmp = Integer.parseInt(String.valueOf(computerUsedNumbers.charAt(i)));
+//        for (int i = 0; i < temporaryArray.length; i++){
+//            compStepCharArray[i] = temporaryArray[i];
+//        }
+//        countOfNumbers--;
+//        for (int i = 0; i < computerStep.length(); i++){
+//            int tmp = Integer.parseInt(String.valueOf(computerStep.charAt(i)));
 //            request.setAttribute("v" + tmp, "O");
 //        }
-
-//        request.setAttribute("v" + (Integer.parseInt(String.valueOf(newCompSteps[indexForSearchCompStep]))), "O");
-//        char [] compStep = new char[newCompSteps.length];
-//        for (int i = 0; i < compStep.length; i++){
-//            compStep [i] = newCompSteps [i];
-//        }
-//        return "/WEB-INF/pages/table.jsp";
-
-
-//
-//        if (computerStep == null){
-//
-//        } else {
-//
-//        }
-//
-//
 //        return "/WEB-INF/pages/table.jsp";
 //    }
-
-
-//    private String computerSteps(HttpServletRequest request) {
-//        Random random = new Random();
-//        char [] newCompSteps = new char[(compStep.length - 1)];
-//        //проверяем и удаляем из комбинации для компа ту цифру, которой уже пользователь походил
-//        for (int i = 0; i < compStep.length; i++) {
-//            if (!userStep.contains(String.valueOf(compStep[i]))) {
-//                newCompSteps [i] = compStep[i];
-//            }
-//        }
-//        //*******
-//        int indexForSearchCompStep = random.nextInt((newCompSteps.length-1));
-//        for (int i = 0; i < )
-//        request.setAttribute("v" + (Integer.parseInt(String.valueOf(newCompSteps[indexForSearchCompStep]))), "O");
-//        char [] compStep = new char[newCompSteps.length];
-//        for (int i = 0; i < compStep.length; i++){
-//            compStep [i] = newCompSteps [i];
-//        }
-//        return "/WEB-INF/pages/table.jsp";
-//    }
-
 
 
 }
