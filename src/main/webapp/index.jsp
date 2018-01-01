@@ -27,20 +27,20 @@
 <%--кнопки для выполнения пользователем ходов--%>
     <table>
         <tr>
-            <td> <form action="/in/step1" method="get"><input type="submit" name="st1" value="1"></form> </td>
-            <td> <form action="/in/step2" method="get"><input type="submit" name="st2" value="2"></form> </td>
-            <td> <form action="/in/step3" method="get"><input type="submit" name="st3" value="3"></form> </td>
+            <td> <form action="/in/step" method="get"><input type="submit" value="1"  name="stepParam"></form> </td>
+            <td> <form action="/in/step" method="get"><input type="submit" value="2"  name="stepParam"></form> </td>
+            <td> <form action="/in/step" method="get"><input type="submit" value="3"  name="stepParam"></form> </td>
 
         </tr>
         <tr>
-            <td> <form action="/in/step4" method="get"><input type="submit" name="st4" value="4"></form> </td>
-            <td> <form action="/in/step5" method="get"><input type="submit" name="st5" value="5"></form> </td>
-            <td> <form action="/in/step6" method="get"><input type="submit" name="st6" value="6"></form> </td>
+            <td> <form action="/in/step" method="get"><input type="submit"  value="4" name="stepParam"></form> </td>
+            <td> <form action="/in/step" method="get"><input type="submit" value="5" name="stepParam"></form> </td>
+            <td> <form action="/in/step" method="get"><input type="submit"  value="6" name="stepParam"></form> </td>
         </tr>
         <tr>
-            <td> <form action="/in/step7" method="get"><input type="submit" name="st7" value="7"></form> </td>
-            <td> <form action="/in/step8" method="get"><input type="submit" name="st8" value="8"></form> </td>
-            <td> <form action="/in/step9" method="get"><input type="submit" name="st9" value="9"></form> </td>
+            <td> <form action="/in/step" method="get"><input type="submit" value="7" name="stepParam"></form> </td>
+            <td> <form action="/in/step" method="get"><input type="submit" value="8" name="stepParam"></form> </td>
+            <td> <form action="/in/step" method="get"><input type="submit" value="9" name="stepParam"></form> </td>
         </tr>
     </table>
 <hr>
