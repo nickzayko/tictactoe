@@ -17,7 +17,7 @@
 <form action="/in/restartGame">
     <input type="submit" value="Restart game">
 </form>
-
+<h2>${inform}</h2>
 
 
 </body>
