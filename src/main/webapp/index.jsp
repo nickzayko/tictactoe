@@ -5,21 +5,22 @@
 <hr>
 
 <%--таблица для отрисовки хода игры, может даже потом переведу на <label></label>, чтобы просто отображать текст--%>
+
 <table>
     <tr>
-        <td><input type="text" name="t1" size="1" ></td>
-        <td><input type="text" name="t2" size="1" ></td>
-        <td><input type="text" name="t3" size="1" ></td>
+        <td><input type="text" name="t1" size="1" value= ${v1} > </td>
+        <td><input type="text" name="t2" size="1" value= ${v2}></td>
+        <td><input type="text" name="t3" size="1" value= ${v3}></td>
     </tr>
     <tr>
-        <td><input type="text" name="t4" size="1" ></td>
-        <td><input type="text" name="t5" size="1" ></td>
-        <td><input type="text" name="t6" size="1" ></td>
+        <td><input type="text" name="t4" size="1" value= ${v4} ></td>
+        <td><input type="text" name="t5" size="1" value= ${v5}></td>
+        <td><input type="text" name="t6" size="1" value= ${v6}></td>
     </tr>
     <tr>
-        <td><input type="text" name="t7" size="1" ></td>
-        <td><input type="text" name="t8" size="1" ></td>
-        <td><input type="text" name="t9" size="1" ></td>
+        <td><input type="text" name="t7" size="1" value= ${v7}></td>
+        <td><input type="text" name="t8" size="1" value= ${v8}></td>
+        <td><input type="text" name="t9" size="1" value= ${v9}></td>
     </tr>
 </table>
 
@@ -44,8 +45,6 @@
         </tr>
     </table>
 <hr>
-
-
 
 
 
