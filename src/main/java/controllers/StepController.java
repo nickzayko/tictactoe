@@ -38,7 +38,6 @@ public class StepController {
         allNumberCombination = updateAllNumberCombinationAfterUserStep (userStep, allNumberCombination);
         if (allNumberCombination != null) {
             computerStep = saveCompStep(allNumberCombination, computerStep);
-
             allNumberCombination = updateAllNumberCombinationAfterCompStep(allNumberCombination, computerStep);
         } else {
             request.setAttribute("inform", "Партия сыграна, ходы закончились! Начните игру заново!");
