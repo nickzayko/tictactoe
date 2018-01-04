@@ -66,6 +66,7 @@ public class StepController {
         return "/WEB-INF/pages/table.jsp";
     }
 
+    //из общей комбинации удаляются заполненные пользователем ячейки
     private String updateAllNumberCombinationAfterUserStep(String userStep, String allNumberCombination) {
         String temporaryString = null;
         for (int i = 0; i < allNumberCombination.length(); i++){
@@ -101,6 +102,7 @@ public class StepController {
         return "/WEB-INF/pages/table.jsp";
     }
 
+    //из общей комбинации удаляются заполненные компом ячейки
     private String updateAllNumberCombinationAfterCompStep(String allNumberCombination, String computerStep) {
         String temporaryString = null;
         for (int i = 0; i < allNumberCombination.length(); i++){
