@@ -33,17 +33,23 @@ public class StepController {
     @RequestMapping("/step")
     private String step(HttpServletRequest request) {
         String value = request.getParameter("stepParam");
-        userStep = saveUserStep(userStep, value);
-        printUserSteps(request, userStep);
-        allNumberCombination = updateAllNumberCombinationAfterUserStep (userStep, allNumberCombination);
-        if (allNumberCombination != null) {
-            computerStep = saveCompStep(allNumberCombination, computerStep);
-            allNumberCombination = updateAllNumberCombinationAfterCompStep(allNumberCombination, computerStep);
+        if (allNumberCombination.contains(value)) {
+            userStep = saveUserStep(userStep, value);
+            printUserSteps(request, userStep);
+            allNumberCombination = updateAllNumberCombinationAfterUserStep(userStep, allNumberCombination);
+            if (allNumberCombination != null) {
+                computerStep = saveCompStep(allNumberCombination, computerStep);
+                allNumberCombination = updateAllNumberCombinationAfterCompStep(allNumberCombination, computerStep);
+            } else {
+                request.setAttribute("inform", "Партия сыграна, ходы закончились! Начните игру заново!");
+            }
+            printComputerSteps(request, computerStep);
+            checkVictoryOfPlayers(userStep, computerStep, request);
         } else {
-            request.setAttribute("inform", "Партия сыграна, ходы закончились! Начните игру заново!");
+            printUserSteps(request, userStep);
+            printComputerSteps(request, computerStep);
+            request.setAttribute("inform", "Эй, чувак, ты сюда не ходЫ, ты в свободную ячейку ходЫ!!! ");
         }
-        printComputerSteps(request, computerStep);
-        checkVictoryOfPlayers(userStep, computerStep, request);
         return "/WEB-INF/pages/table.jsp";
     }
 
