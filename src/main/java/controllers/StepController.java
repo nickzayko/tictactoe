@@ -1,11 +1,9 @@
 package controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 import java.util.Random;
 
 
@@ -14,147 +12,110 @@ import java.util.Random;
 public class StepController {
 
     // победные комбинации
-    //    private static String VICTORYCOMBINATION1 = "123";
-    //    private static String VICTORYCOMBINATION2 = "456";
-    //    private static String VICTORYCOMBINATION3 = "789";
-    //    private static String VICTORYCOMBINATION4 = "147";
-    //    private static String VICTORYCOMBINATION5 = "258";
-    //    private static String VICTORYCOMBINATION6 = "369";
-    //    private static String VICTORYCOMBINATION7 = "159";
-    //    private static String VICTORYCOMBINATION8 = "357";
+//        private static String VICTORYCOMBINATION0 = "123";
+//        private static String VICTORYCOMBINATION1 = "456";
+//        private static String VICTORYCOMBINATION2 = "789";
+//        private static String VICTORYCOMBINATION3 = "147";
+//        private static String VICTORYCOMBINATION4 = "258";
+//        private static String VICTORYCOMBINATION5 = "369";
+//        private static String VICTORYCOMBINATION6 = "159";
+//        private static String VICTORYCOMBINATION7 = "357";
 
 
     public String allNumberCombination = "123456789";
-    public String userStep = null;
-    public String computerStep = null;
+    public String userStep = "";
+    public String computerStep = "";
     Random random = new Random();
+
 
     //обработчик шагов
     @RequestMapping("/step")
     private String step(HttpServletRequest request) {
         String value = request.getParameter("stepParam");
         if (allNumberCombination.contains(value)) {
-            userStep = saveUserStep(userStep, value);
-            printUserSteps(request, userStep);
-            allNumberCombination = updateAllNumberCombinationAfterUserStep(userStep, allNumberCombination);
-            if (allNumberCombination != null) {
-                computerStep = saveCompStep(allNumberCombination, computerStep);
-                allNumberCombination = updateAllNumberCombinationAfterCompStep(allNumberCombination, computerStep);
+            userStep = saveSteps(userStep, value);
+            allNumberCombination = updateAllNumberCombination(userStep, allNumberCombination);
+            if (allNumberCombination != "") {
+                computerStep = saveCompSteps (computerStep, allNumberCombination);
+                allNumberCombination = updateAllNumberCombination(computerStep, allNumberCombination);
             } else {
                 request.setAttribute("inform", "Партия сыграна, ходы закончились! Начните игру заново!");
             }
-            printComputerSteps(request, computerStep);
             checkVictoryOfPlayers(userStep, computerStep, request);
         } else {
-            printUserSteps(request, userStep);
-            printComputerSteps(request, computerStep);
-            request.setAttribute("inform", "Эй, чувак, ты сюда не ходЫ, ты в свободную ячейку ходЫ!!! ");
+            request.setAttribute("inform", "Эй, чувак, ты сюда не ходи, ты в свободную ячейку ходи!!! ");
         }
+        printSteps(request, userStep, "X");
+        printSteps(request, computerStep, "O");
         return "/WEB-INF/pages/table.jsp";
     }
+
 
     //метод запоминает комбинацию ходов пользователя
-    private String saveUserStep(String userStep, String value) {
-        if (userStep == null) {
-            userStep = value;
-        } else {
-            userStep = userStep + value;
-        }
-        return userStep;
+    private String saveSteps(String step, String value) {
+        return (step + value);
     }
 
-    // метод запоминает куда пользователь походит и делает отрисовку "Х" в таблице
-    private String printUserSteps(HttpServletRequest request, String userStep) {
-        for (int i = 0; i < userStep.length(); i++) {
-            int tmp = Integer.parseInt(String.valueOf(userStep.charAt(i)));
-            request.setAttribute("v" + (tmp), "X");
-        }
-        return "/WEB-INF/pages/table.jsp";
-    }
-
-    //из общей комбинации удаляются заполненные пользователем ячейки
-    private String updateAllNumberCombinationAfterUserStep(String userStep, String allNumberCombination) {
-        String temporaryString = null;
-        for (int i = 0; i < allNumberCombination.length(); i++){
-            if (!userStep.contains(String.valueOf(allNumberCombination.charAt(i)))){
-                if (temporaryString == null){
-                    temporaryString = String.valueOf(allNumberCombination.charAt(i));
-                } else {
-                    temporaryString = temporaryString + String.valueOf(allNumberCombination.charAt(i));
-                }
-            }
-        }
-        allNumberCombination = temporaryString;
-        return allNumberCombination;
-    }
 
     //учу комп ставить нолики
-    private String saveCompStep(String allNumberCombination, String computerStep) {
-        String temporarySymbol = String.valueOf(allNumberCombination.charAt(random.nextInt(allNumberCombination.length())));
-        if (computerStep == null){
-            computerStep = String.valueOf(temporarySymbol);
-        } else {
-            computerStep = computerStep + String.valueOf(temporarySymbol);
-        }
-        return computerStep;
+    private String saveCompSteps (String computerStep, String allNumberCombination) {
+        String temporaryValue = String.valueOf(allNumberCombination.charAt(random.nextInt(allNumberCombination.length())));
+        return saveSteps(computerStep, temporaryValue);
     }
 
-    // отрисовка в таблице ходов компа
-    private String printComputerSteps(HttpServletRequest request, String computerStep) {
-        for (int i = 0; i < computerStep.length(); i++) {
-            int tmp = Integer.parseInt(String.valueOf(computerStep.charAt(i)));
-            request.setAttribute("v" + (tmp), "O");
-        }
-        return "/WEB-INF/pages/table.jsp";
-    }
 
-    //из общей комбинации удаляются заполненные компом ячейки
-    private String updateAllNumberCombinationAfterCompStep(String allNumberCombination, String computerStep) {
-        String temporaryString = null;
+    //из общей комбинации удаляются заполненные ячейки
+    private String updateAllNumberCombination(String combinationOfSteps, String allNumberCombination) {
+        String temporaryString = "";
         for (int i = 0; i < allNumberCombination.length(); i++){
-            if (!computerStep.contains(String.valueOf(allNumberCombination.charAt(i)))){
-                if (temporaryString == null){
-                    temporaryString = String.valueOf(allNumberCombination.charAt(i));
-                } else {
-                    temporaryString = temporaryString + String.valueOf(allNumberCombination.charAt(i));
-                }
+            if (!combinationOfSteps.contains(String.valueOf(allNumberCombination.charAt(i)))){
+                temporaryString = temporaryString + String.valueOf(allNumberCombination.charAt(i));
             }
         }
-        allNumberCombination = temporaryString;
-        return allNumberCombination;
+        return temporaryString;
     }
 
+
     //Проверка и выявление победителя
-    private String checkVictoryOfPlayers(String userStep, String computerStep, HttpServletRequest request) {
-        Boolean checkUser = false;
-        if ((userStep.contains("1") && ((userStep.contains("2") && userStep.contains("3")) || (userStep.contains("4") && userStep.contains("7")) || (userStep.contains("5") && userStep.contains("9")))) || (userStep.contains("5") && ((userStep.contains("4") && userStep.contains("6")) || (userStep.contains("2") && userStep.contains("8")) || (userStep.contains("3") && userStep.contains("7")))) || (userStep.contains("9") && ((userStep.contains("7") && userStep.contains("8")) || (userStep.contains("3") && userStep.contains("6"))))) {
-            checkUser = true;
+    private void checkVictoryOfPlayers(String userStep, String computerStep, HttpServletRequest request) {
+        if (checkCombinationsIfContainVictoryCombination (userStep)) {
             request.setAttribute("victory", "THE USER IS WINNER!!!   GAME OVER!!! PRESS BUTTON To Restart Game");
-            userStep = null;
-            computerStep = null;
-            allNumberCombination = "123456789";
-            return "/WEB-INF/pages/table.jsp";
+        } else {
+            if (checkCombinationsIfContainVictoryCombination (computerStep)){
+                request.setAttribute("victory", "THE SHAITAN_MACHINE IS WINNER!!!   GAME OVER!!! PRESS BUTTON To Restart Game");
+            }
         }
-        Boolean checkComp = false;
-        if ((computerStep.contains("1") && ((computerStep.contains("2") && computerStep.contains("3")) || (computerStep.contains("4") && computerStep.contains("7")) || (computerStep.contains("5") && computerStep.contains("9")))) || (computerStep.contains("5") && ((computerStep.contains("4") && computerStep.contains("6")) || (computerStep.contains("2") && computerStep.contains("8")) || (computerStep.contains("3") && computerStep.contains("7")))) || (computerStep.contains("9") && ((computerStep.contains("7") && computerStep.contains("8")) || (computerStep.contains("3") && computerStep.contains("6"))))) {
-            checkComp = true;
-            request.setAttribute("victory", "THE SHAITAN_MACHINE IS WINNER!!!   GAME OVER!!! PRESS BUTTON To Restart Game");
-            computerStep = null;
-            userStep = null;
-            allNumberCombination = "123456789";
-            return "/WEB-INF/pages/table.jsp";
-        }
-        return "/WEB-INF/pages/table.jsp";
     }
+    //проверяется, соержат ли ходы игроков победные комбинации
+    private boolean checkCombinationsIfContainVictoryCombination(String playersCombinations) {
+        boolean flag = false;
+        if ((playersCombinations.contains("1") && ((playersCombinations.contains("2") && playersCombinations.contains("3")) || (playersCombinations.contains("4")
+                && playersCombinations.contains("7")) || (playersCombinations.contains("5") && playersCombinations.contains("9"))))
+                || (playersCombinations.contains("5") && ((playersCombinations.contains("4") && playersCombinations.contains("6"))
+                || (playersCombinations.contains("2") && playersCombinations.contains("8")) || (playersCombinations.contains("3") && playersCombinations.contains("7"))))
+                || (playersCombinations.contains("9") && ((playersCombinations.contains("7") && playersCombinations.contains("8")) || (playersCombinations.contains("3")
+                && playersCombinations.contains("6"))))) {
+            flag = true;
+        }
+        return flag;
+    }
+
+
+    // отрисовка в таблице ходов
+    private void printSteps(HttpServletRequest request, String step, String x) {
+        for (int i = 0; i < step.length(); i++) {
+            request.setAttribute("v" + step.charAt(i), x);
+        }
+    }
+
 
     //сброс игры
     @RequestMapping("/restartGame")
     public String restartGame(HttpServletRequest request) {
-        userStep = null;
-        computerStep = null;
+        userStep = "";
+        computerStep = "";
         allNumberCombination = "123456789";
         return "/index.jsp";
     }
 
 }
-
