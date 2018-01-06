@@ -2,7 +2,6 @@ package controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.Random;
 
@@ -51,7 +50,7 @@ public class StepController {
     }
 
 
-    //метод запоминает комбинацию ходов пользователя
+    //метод запоминает комбинацию ходов
     private String saveSteps(String step, String value) {
         return (step + value);
     }
@@ -86,7 +85,7 @@ public class StepController {
             }
         }
     }
-    //проверяется, соержат ли ходы игроков победные комбинации
+    //проверяется, содержат ли ходы игроков победные комбинации
     private boolean checkCombinationsIfContainVictoryCombination(String playersCombinations) {
         boolean flag = false;
         if ((playersCombinations.contains("1") && ((playersCombinations.contains("2") && playersCombinations.contains("3")) || (playersCombinations.contains("4")
