@@ -101,9 +101,9 @@ public class StepController {
 
 
     // отрисовка в таблице ходов
-    private void printSteps(HttpServletRequest request, String step, String x) {
+    private void printSteps(HttpServletRequest request, String step, String xOrO) {
         for (int i = 0; i < step.length(); i++) {
-            request.setAttribute("v" + step.charAt(i), x);
+            request.setAttribute("v" + step.charAt(i), xOrO);
         }
     }
 
