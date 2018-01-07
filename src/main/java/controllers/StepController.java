@@ -2,13 +2,16 @@ package controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Random;
 
 
 @Controller
 @RequestMapping("/in")
-public class StepController {
+public class StepController extends HttpServlet {
 
     // победные комбинации
 //        private static String VICTORYCOMBINATION0 = "123";
@@ -21,21 +24,26 @@ public class StepController {
 //        private static String VICTORYCOMBINATION7 = "357";
 
 
+
+
     public String allNumberCombination = "123456789";
     public String userStep = "";
     public String computerStep = "";
     Random random = new Random();
 
 
+
+
     //обработчик шагов
     @RequestMapping("/step")
-    private String step(HttpServletRequest request) {
+    private String step(HttpServletRequest request, HttpSession session) {
+        session.getAttribute("stepParam");
         String value = request.getParameter("stepParam");
         if (allNumberCombination.contains(value)) {
             userStep = saveSteps(userStep, value);
             allNumberCombination = updateAllNumberCombination(userStep, allNumberCombination);
             if (allNumberCombination != "") {
-                computerStep = saveCompSteps (computerStep, allNumberCombination);
+                computerStep = saveCompSteps(computerStep, allNumberCombination);
                 allNumberCombination = updateAllNumberCombination(computerStep, allNumberCombination);
             } else {
                 request.setAttribute("inform", "Партия сыграна, ходы закончились! Начните игру заново!");
@@ -87,15 +95,35 @@ public class StepController {
     }
     //проверяется, содержат ли ходы игроков победные комбинации
     private boolean checkCombinationsIfContainVictoryCombination(String playersCombinations) {
+        String [] victoryCombination = new String[8];
+        victoryCombination[0] = "123";
+        victoryCombination[1] = "456";
+        victoryCombination[2] = "789";
+        victoryCombination[3] = "147";
+        victoryCombination[4] = "258";
+        victoryCombination[5] = "369";
+        victoryCombination[6] = "159";
+        victoryCombination[7] = "357";
         boolean flag = false;
-        if ((playersCombinations.contains("1") && ((playersCombinations.contains("2") && playersCombinations.contains("3")) || (playersCombinations.contains("4")
-                && playersCombinations.contains("7")) || (playersCombinations.contains("5") && playersCombinations.contains("9"))))
-                || (playersCombinations.contains("5") && ((playersCombinations.contains("4") && playersCombinations.contains("6"))
-                || (playersCombinations.contains("2") && playersCombinations.contains("8")) || (playersCombinations.contains("3") && playersCombinations.contains("7"))))
-                || (playersCombinations.contains("9") && ((playersCombinations.contains("7") && playersCombinations.contains("8")) || (playersCombinations.contains("3")
-                && playersCombinations.contains("6"))))) {
-            flag = true;
+        int j = 0;
+        for (int i = 0; i < 8; i++) {
+            if (playersCombinations.contains(String.valueOf(victoryCombination[i].charAt(j))) &&
+                    playersCombinations.contains(String.valueOf(victoryCombination[i].charAt(j + 1))) &&
+                    playersCombinations.contains(String.valueOf(victoryCombination[i].charAt(j + 2)))) {
+                flag = true;
+            }
+
         }
+        // было так....
+        //        if ((playersCombinations.contains("1") && ((playersCombinations.contains("2") && playersCombinations.contains("3")) || (playersCombinations.contains("4")
+//                && playersCombinations.contains("7")) || (playersCombinations.contains("5") && playersCombinations.contains("9"))))
+//                || (playersCombinations.contains("5") && ((playersCombinations.contains("4") && playersCombinations.contains("6"))
+//                || (playersCombinations.contains("2") && playersCombinations.contains("8")) || (playersCombinations.contains("3") && playersCombinations.contains("7"))))
+//                || (playersCombinations.contains("9") && ((playersCombinations.contains("7") && playersCombinations.contains("8")) || (playersCombinations.contains("3")
+//                && playersCombinations.contains("6"))))) {
+//            flag = true;
+//        }
+
         return flag;
     }
 
@@ -110,10 +138,11 @@ public class StepController {
 
     //сброс игры
     @RequestMapping("/restartGame")
-    public String restartGame(HttpServletRequest request) {
+    public String restartGame(HttpServletRequest request, HttpSession session) {
         userStep = "";
         computerStep = "";
         allNumberCombination = "123456789";
+        session.invalidate();
         return "/index.jsp";
     }
 
