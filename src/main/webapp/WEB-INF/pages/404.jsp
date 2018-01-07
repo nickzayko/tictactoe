@@ -13,10 +13,11 @@
 <body class="bodyException">
 
 <div class="error-div">
-    <font size="6" style="font-family: sans-serif"> 404 page. Something went wrong...</font> <br/><br/><br/>
+    <font size="6" style="font-family: sans-serif"> 404 page not found. Something went wrong...</font> <br/><br/><br/>
     <button style="margin-left: 38%" type="button" name="back" class="buttonAuth" onclick="history.back()">back</button>
 
 </div>
+<img src="WEB-INF/images/404.jpeg" width="600" height="400" />
 
 
 </body>
