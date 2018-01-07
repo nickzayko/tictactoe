@@ -23,16 +23,10 @@ public class StepController extends HttpServlet {
 //        private static String VICTORYCOMBINATION6 = "159";
 //        private static String VICTORYCOMBINATION7 = "357";
 
-
-
-
     public String allNumberCombination = "123456789";
     public String userStep = "";
     public String computerStep = "";
     Random random = new Random();
-
-
-
 
     //обработчик шагов
     @RequestMapping("/step")
@@ -57,19 +51,16 @@ public class StepController extends HttpServlet {
         return "/WEB-INF/pages/table.jsp";
     }
 
-
     //метод запоминает комбинацию ходов
     private String saveSteps(String step, String value) {
         return (step + value);
     }
-
 
     //учу комп ставить нолики
     private String saveCompSteps (String computerStep, String allNumberCombination) {
         String temporaryValue = String.valueOf(allNumberCombination.charAt(random.nextInt(allNumberCombination.length())));
         return saveSteps(computerStep, temporaryValue);
     }
-
 
     //из общей комбинации удаляются заполненные ячейки
     private String updateAllNumberCombination(String combinationOfSteps, String allNumberCombination) {
@@ -81,7 +72,6 @@ public class StepController extends HttpServlet {
         }
         return temporaryString;
     }
-
 
     //Проверка и выявление победителя
     private void checkVictoryOfPlayers(String userStep, String computerStep, HttpServletRequest request) {
@@ -127,14 +117,12 @@ public class StepController extends HttpServlet {
         return flag;
     }
 
-
     // отрисовка в таблице ходов
     private void printSteps(HttpServletRequest request, String step, String xOrO) {
         for (int i = 0; i < step.length(); i++) {
             request.setAttribute("v" + step.charAt(i), xOrO);
         }
     }
-
 
     //сброс игры
     @RequestMapping("/restartGame")
