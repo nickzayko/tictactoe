@@ -3,15 +3,13 @@ package controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Random;
 
-
 @Controller
 @RequestMapping("/in")
-public class StepController extends HttpServlet {
+public class StepController {
 
     // победные комбинации
 //        private static String VICTORYCOMBINATION0 = "123";
@@ -23,18 +21,27 @@ public class StepController extends HttpServlet {
 //        private static String VICTORYCOMBINATION6 = "159";
 //        private static String VICTORYCOMBINATION7 = "357";
 
-    public String allNumberCombination = "123456789";
-    public String userStep = "";
-    public String computerStep = "";
+    public String allNumberCombination;
+    public String userStep;
+    public String computerStep;
     Random random = new Random();
+
 
     //обработчик шагов
     @RequestMapping("/step")
-    private String step(HttpServletRequest request, HttpSession session) {
-        session = request.getSession(true);
-        String sessionId = session.getId();
-        StringBuffer url = request.getRequestURL();
-        session.setAttribute("URL", url);
+    private String step(HttpServletRequest request) {
+        HttpSession session = request.getSession(true);
+        //проверка, данные об игре записаны в сессию, пользователь новый или нет?
+        if (session.getAttribute("userStepKey") == null) {
+            allNumberCombination = "123456789";
+            userStep = "";
+            computerStep = "";
+        } else {
+            userStep = String.valueOf(session.getAttribute("userStepKey"));
+            computerStep = String.valueOf(session.getAttribute("computerStepKey"));
+            allNumberCombination = String.valueOf(session.getAttribute("allNumberCombinationKey"));
+        }
+        //----------------------------------------------------------------------
         String value = request.getParameter("stepParam");
         if (allNumberCombination.contains(value)) {
             userStep = saveSteps(userStep, value);
@@ -45,17 +52,21 @@ public class StepController extends HttpServlet {
             } else {
                 request.setAttribute("inform", "Партия сыграна, ходы закончились! Начните игру заново!");
             }
-            checkVictoryOfPlayers(userStep, computerStep, request);
+            //это надо, чтобы в случае чьей-либо победы и наличие свободных ячеек запретить пользователю играть дальше
+            if (checkVictoryOfPlayers(userStep, computerStep, request)){
+                allNumberCombination = "";
+            }
+            //-------------------------------------------------------------------------------------------------------
         } else {
             request.setAttribute("inform", "Эй, чувак, ты сюда не ходи, ты в свободную ячейку ходи!!! ");
         }
-        session.setAttribute("session", sessionId);
-        session.setAttribute(sessionId, userStep);
-        session.setAttribute(sessionId, computerStep);
-        session.setAttribute(sessionId, allNumberCombination);
+        //запись данных об игре с помощью сессии
+        session.setAttribute("userStepKey", userStep);
+        session.setAttribute("computerStepKey", computerStep);
+        session.setAttribute("allNumberCombinationKey", allNumberCombination);
+        //--------------------
         printSteps(request, userStep, "X");
         printSteps(request, computerStep, "O");
-
         return "/WEB-INF/pages/table.jsp";
     }
 
@@ -82,15 +93,20 @@ public class StepController extends HttpServlet {
     }
 
     //Проверка и выявление победителя
-    private void checkVictoryOfPlayers(String userStep, String computerStep, HttpServletRequest request) {
+    private boolean checkVictoryOfPlayers(String userStep, String computerStep, HttpServletRequest request) {
+        boolean flag = false;
         if (checkCombinationsIfContainVictoryCombination (userStep)) {
             request.setAttribute("victory", "THE USER IS WINNER!!!   GAME OVER!!! PRESS BUTTON To Restart Game");
+            flag = true;
         } else {
             if (checkCombinationsIfContainVictoryCombination (computerStep)){
                 request.setAttribute("victory", "THE SHAITAN_MACHINE IS WINNER!!!   GAME OVER!!! PRESS BUTTON To Restart Game");
+                flag = true;
             }
         }
+        return flag;
     }
+
     //проверяется, содержат ли ходы игроков победные комбинации
     private boolean checkCombinationsIfContainVictoryCombination(String playersCombinations) {
         String [] victoryCombination = new String[8];
@@ -110,18 +126,7 @@ public class StepController extends HttpServlet {
                     playersCombinations.contains(String.valueOf(victoryCombination[i].charAt(j + 2)))) {
                 flag = true;
             }
-
         }
-        // было так....
-        //        if ((playersCombinations.contains("1") && ((playersCombinations.contains("2") && playersCombinations.contains("3")) || (playersCombinations.contains("4")
-//                && playersCombinations.contains("7")) || (playersCombinations.contains("5") && playersCombinations.contains("9"))))
-//                || (playersCombinations.contains("5") && ((playersCombinations.contains("4") && playersCombinations.contains("6"))
-//                || (playersCombinations.contains("2") && playersCombinations.contains("8")) || (playersCombinations.contains("3") && playersCombinations.contains("7"))))
-//                || (playersCombinations.contains("9") && ((playersCombinations.contains("7") && playersCombinations.contains("8")) || (playersCombinations.contains("3")
-//                && playersCombinations.contains("6"))))) {
-//            flag = true;
-//        }
-
         return flag;
     }
 
@@ -135,10 +140,9 @@ public class StepController extends HttpServlet {
     //сброс игры
     @RequestMapping("/restartGame")
     public String restartGame(HttpServletRequest request, HttpSession session) {
-        userStep = "";
-        computerStep = "";
-        allNumberCombination = "123456789";
-        session.invalidate();
+        session.removeAttribute("userStepKey");
+        session.removeAttribute("computerStepKey");
+        session.removeAttribute("allNumberCombinationKey");
         return "/index.jsp";
     }
 
