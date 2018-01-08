@@ -31,7 +31,10 @@ public class StepController extends HttpServlet {
     //обработчик шагов
     @RequestMapping("/step")
     private String step(HttpServletRequest request, HttpSession session) {
-        session.getAttribute("stepParam");
+        session = request.getSession(true);
+        String sessionId = session.getId();
+        StringBuffer url = request.getRequestURL();
+        session.setAttribute("URL", url);
         String value = request.getParameter("stepParam");
         if (allNumberCombination.contains(value)) {
             userStep = saveSteps(userStep, value);
@@ -46,8 +49,13 @@ public class StepController extends HttpServlet {
         } else {
             request.setAttribute("inform", "Эй, чувак, ты сюда не ходи, ты в свободную ячейку ходи!!! ");
         }
+        session.setAttribute("session", sessionId);
+        session.setAttribute(sessionId, userStep);
+        session.setAttribute(sessionId, computerStep);
+        session.setAttribute(sessionId, allNumberCombination);
         printSteps(request, userStep, "X");
         printSteps(request, computerStep, "O");
+
         return "/WEB-INF/pages/table.jsp";
     }
 
@@ -118,9 +126,9 @@ public class StepController extends HttpServlet {
     }
 
     // отрисовка в таблице ходов
-    private void printSteps(HttpServletRequest request, String step, String xOrO) {
+    private void printSteps(HttpServletRequest request, String step, String symbol) {
         for (int i = 0; i < step.length(); i++) {
-            request.setAttribute("v" + step.charAt(i), xOrO);
+            request.setAttribute("v" + step.charAt(i), symbol);
         }
     }
 

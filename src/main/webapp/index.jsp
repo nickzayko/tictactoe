@@ -44,7 +44,10 @@
             <td> <form action="/in/step" method="get"><input type="submit" value="9" name="stepParam"></form> </td>
         </tr>
     </table>
+${session}
+${URL}
 <hr>
+
 
 
 

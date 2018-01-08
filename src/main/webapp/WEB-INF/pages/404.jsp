@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: katya
@@ -17,7 +18,9 @@
     <button style="margin-left: 38%" type="button" name="back" class="buttonAuth" onclick="history.back()">back</button>
 
 </div>
-<img src="WEB-INF/images/404.jpeg" width="600" height="400" />
+
+<img src="/WEB-INF/images/404.jpeg" width="600" height="400" />
+
 
 
 </body>
