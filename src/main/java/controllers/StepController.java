@@ -3,7 +3,9 @@ package controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Random;
 
@@ -26,10 +28,44 @@ public class StepController {
     public String computerStep;
     Random random = new Random();
 
-
     //обработчик шагов
     @RequestMapping("/step")
-    private String step(HttpServletRequest request) {
+    private String step(HttpServletRequest request, HttpServletResponse response) {
+
+        //сохранение игры с помощью куки
+        boolean flag = false;
+        String cookieNames [] = new String[3];
+        cookieNames[0] = "userStepName";
+        cookieNames[1] = "computerStepName";
+        cookieNames[2] = "allNumberCombinationName";
+        Cookie [] cookies = request.getCookies();
+        for (int i = 0; i < cookies.length; i++) {
+            for (int j = 0; j < cookieNames.length; j++) {
+                if (cookies[i].getName().equals(cookieNames[j])) {
+                    flag = true;
+                }
+            }
+        }
+        if (flag){
+            for (int i = 0; i < cookies.length; i++){
+                if (cookies[i].getName().equals("userStepName")){
+                    userStep = String.valueOf(cookies[i].getValue());
+                }
+                if (cookies[i].getName().equals("computerStepName")){
+                    computerStep = String.valueOf(cookies[i].getValue());
+                }
+                if (cookies[i].getName().equals("allNumberCombinationName")){
+                    allNumberCombination = String.valueOf(cookies[i].getValue());
+                }
+            }
+        } else {
+            userStep = "";
+            computerStep = "";
+            allNumberCombination = "123456789";
+        }
+        //---------------------------------------------------------------------
+
+        //сохранение игры с помощью сессии
         HttpSession session = request.getSession(true);
         //проверка, данные об игре записаны в сессию, пользователь новый или нет?
         if (session.getAttribute("userStepKey") == null) {
@@ -41,7 +77,8 @@ public class StepController {
             computerStep = String.valueOf(session.getAttribute("computerStepKey"));
             allNumberCombination = String.valueOf(session.getAttribute("allNumberCombinationKey"));
         }
-        //----------------------------------------------------------------------
+//        //----------------------------------------------------------------------
+
         String value = request.getParameter("stepParam");
         if (allNumberCombination.contains(value)) {
             userStep = saveSteps(userStep, value);
@@ -60,11 +97,22 @@ public class StepController {
         } else {
             request.setAttribute("inform", "Эй, чувак, ты сюда не ходи, ты в свободную ячейку ходи!!! ");
         }
+
+//        //непосредственная запись данных в куки
+//        Cookie cookieUser = new Cookie("userStepName", userStep);
+//        Cookie cookieComp = new Cookie("computerStepName", computerStep);
+//        Cookie cookieNumbers = new Cookie("allNumberCombinationName", allNumberCombination);
+//        response.addCookie(cookieUser);
+//        response.addCookie(cookieComp);
+//        response.addCookie(cookieNumbers);
+//        //--------------------------------------------------------------------
+
         //запись данных об игре с помощью сессии
         session.setAttribute("userStepKey", userStep);
         session.setAttribute("computerStepKey", computerStep);
         session.setAttribute("allNumberCombinationKey", allNumberCombination);
-        //--------------------
+        //----------------------------------------------------------------------------
+
         printSteps(request, userStep, "X");
         printSteps(request, computerStep, "O");
         return "/WEB-INF/pages/table.jsp";
@@ -139,10 +187,26 @@ public class StepController {
 
     //сброс игры
     @RequestMapping("/restartGame")
-    public String restartGame(HttpServletRequest request, HttpSession session) {
+    public String restartGame(HttpServletRequest request, HttpServletResponse response) {
+
+//        // при использовании куки
+//        userStep = "";
+//        computerStep = "";
+//        allNumberCombination = "123456789";
+//        Cookie cookieUser = new Cookie("userStepName", userStep);
+//        Cookie cookieComp = new Cookie("computerStepName", computerStep);
+//        Cookie cookieNumbers = new Cookie("allNumberCombinationName", allNumberCombination);
+//        response.addCookie(cookieUser);
+//        response.addCookie(cookieComp);
+//        response.addCookie(cookieNumbers);
+//        //----------------------------------------------------------------
+
+        //при использованиии сессии
+        HttpSession session = request.getSession(true);
         session.removeAttribute("userStepKey");
         session.removeAttribute("computerStepKey");
         session.removeAttribute("allNumberCombinationKey");
+        //-----------------------------------------------------------------
         return "/index.jsp";
     }
 
