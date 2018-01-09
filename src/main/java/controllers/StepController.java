@@ -32,38 +32,38 @@ public class StepController {
     @RequestMapping("/step")
     private String step(HttpServletRequest request, HttpServletResponse response) {
 
-        //сохранение игры с помощью куки
-        boolean flag = false;
-        String cookieNames [] = new String[3];
-        cookieNames[0] = "userStepName";
-        cookieNames[1] = "computerStepName";
-        cookieNames[2] = "allNumberCombinationName";
-        Cookie [] cookies = request.getCookies();
-        for (int i = 0; i < cookies.length; i++) {
-            for (int j = 0; j < cookieNames.length; j++) {
-                if (cookies[i].getName().equals(cookieNames[j])) {
-                    flag = true;
-                }
-            }
-        }
-        if (flag){
-            for (int i = 0; i < cookies.length; i++){
-                if (cookies[i].getName().equals("userStepName")){
-                    userStep = String.valueOf(cookies[i].getValue());
-                }
-                if (cookies[i].getName().equals("computerStepName")){
-                    computerStep = String.valueOf(cookies[i].getValue());
-                }
-                if (cookies[i].getName().equals("allNumberCombinationName")){
-                    allNumberCombination = String.valueOf(cookies[i].getValue());
-                }
-            }
-        } else {
-            userStep = "";
-            computerStep = "";
-            allNumberCombination = "123456789";
-        }
-        //---------------------------------------------------------------------
+//        //сохранение игры с помощью куки
+//        boolean flag = false;
+//        String cookieNames [] = new String[3];
+//        cookieNames[0] = "userStepName";
+//        cookieNames[1] = "computerStepName";
+//        cookieNames[2] = "allNumberCombinationName";
+//        Cookie [] cookies = request.getCookies();
+//        for (int i = 0; i < cookies.length; i++) {
+//            for (int j = 0; j < cookieNames.length; j++) {
+//                if (cookies[i].getName().equals(cookieNames[j])) {
+//                    flag = true;
+//                }
+//            }
+//        }
+//        if (flag){
+//            for (int i = 0; i < cookies.length; i++){
+//                if (cookies[i].getName().equals("userStepName")){
+//                    userStep = String.valueOf(cookies[i].getValue());
+//                }
+//                if (cookies[i].getName().equals("computerStepName")){
+//                    computerStep = String.valueOf(cookies[i].getValue());
+//                }
+//                if (cookies[i].getName().equals("allNumberCombinationName")){
+//                    allNumberCombination = String.valueOf(cookies[i].getValue());
+//                }
+//            }
+//        } else {
+//            userStep = "";
+//            computerStep = "";
+//            allNumberCombination = "123456789";
+//        }
+//        //---------------------------------------------------------------------
 
         //сохранение игры с помощью сессии
         HttpSession session = request.getSession(true);
@@ -77,7 +77,7 @@ public class StepController {
             computerStep = String.valueOf(session.getAttribute("computerStepKey"));
             allNumberCombination = String.valueOf(session.getAttribute("allNumberCombinationKey"));
         }
-//        //----------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         String value = request.getParameter("stepParam");
         if (allNumberCombination.contains(value)) {
