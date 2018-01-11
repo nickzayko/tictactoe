@@ -19,7 +19,7 @@
 
 </div>
 
-<img src="/WEB-INF/images/404.jpeg" width="600" height="400" />
+ <img src="WEB-INF/images/404.jpeg" width="600" height="400">
 
 
 

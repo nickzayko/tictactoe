@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <body>
 
@@ -25,29 +27,30 @@
 </table>
 
 
+<%--<table>--%>
+    <%--<c:forEach begin="0" end="8" step="1" varStatus="vsOut">--%>
+    <%--<c:if test="${vsOut.current % 3 == 0}">--%>
+    <%--<tr>--%>
+        <%--</c:if>--%>
+        <%--&lt;%&ndash;<td><c:set var="step" value="v${vsOut.count}"/>&ndash;%&gt;--%>
+            <%--&lt;%&ndash;<c:out value="${step}" default=""/>&ndash;%&gt;--%>
+        <%--&lt;%&ndash;</td>&ndash;%&gt;--%>
+            <%--<td><input type="text" name="t9" size="1" value= "v${vsOut.count}" ></td>--%>
+        <%--</c:forEach>--%>
+<%--</table>--%>
+
+
 <%--кнопки для выполнения пользователем ходов--%>
-    <table>
-        <tr>
-            <td> <form action="/in/step" method="get"><input type="submit" value="1"  name="stepParam"></form> </td>
-            <td> <form action="/in/step" method="get"><input type="submit" value="2"  name="stepParam"></form> </td>
-            <td> <form action="/in/step" method="get"><input type="submit" value="3"  name="stepParam"></form> </td>
-
-        </tr>
-        <tr>
-            <td> <form action="/in/step" method="get"><input type="submit"  value="4" name="stepParam"></form> </td>
-            <td> <form action="/in/step" method="get"><input type="submit" value="5" name="stepParam"></form> </td>
-            <td> <form action="/in/step" method="get"><input type="submit"  value="6" name="stepParam"></form> </td>
-        </tr>
-        <tr>
-            <td> <form action="/in/step" method="get"><input type="submit" value="7" name="stepParam"></form> </td>
-            <td> <form action="/in/step" method="get"><input type="submit" value="8" name="stepParam"></form> </td>
-            <td> <form action="/in/step" method="get"><input type="submit" value="9" name="stepParam"></form> </td>
-        </tr>
-    </table>
+<table>
+    <c:forEach begin="0" end="8" step="1" varStatus="vsOut">
+    <c:if test="${vsOut.current % 3 == 0}">
+    <tr>
+        </c:if>
+        <td>
+            <form action="/in/step" method="get"><input type="submit" value=${vsOut.count}  name="stepParam"></form>
+        </td>
+        </c:forEach>
+</table>
 <hr>
-
-
-
-
 </body>
 </html>
